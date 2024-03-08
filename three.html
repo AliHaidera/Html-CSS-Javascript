@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Application Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    form {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="jobApplicationForm" novalidate>
+    <h2>Job Application Form</h2>
+    
+    <!-- All form fields here -->
+    <!-- Personal Information -->
+    <h3>Personal Information</h3>
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" required>
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" required>
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="tel" id="phoneNumber" required>
+    <label for="email">Email Address:</label>
+    <input type="email" id="email" required>
+    <label for="street">Street:</label>
+    <input type="text" id="street" required>
+    <label for="city">City:</label>
+    <input type="text" id="city" required>
+    <label for="state">State:</label>
+    <input type="text" id="state" required>
+    <label for="zip">ZIP Code:</label>
+    <input type="text" id="zip" required>
+
+    <!-- Resume/Cover Letter -->
+    <h3>Resume/Cover Letter</h3>
+    <label for="resume">Upload Resume:</label>
+    <input type="file" id="resume" accept=".pdf,.doc,.docx" required>
+    <label for="coverLetter">Cover Letter:</label>
+    <textarea id="coverLetter" rows="4" required></textarea>
+
+    <!-- Education -->
+    <h3>Education</h3>
+    <label for="educationLevel">Highest Level of Education Attained:</label>
+    <select id="educationLevel" required>
+      <option value="">Select</option>
+      <option value="High School">High School</option>
+      <option value="Bachelor's Degree">Bachelor's Degree</option>
+      <option value="Master's Degree">Master's Degree</option>
+      <option value="Ph.D.">Ph.D.</option>
+    </select>
+    <label for="schoolName">Name of School/University:</label>
+    <input type="text" id="schoolName" required>
+    <label for="major">Major/Area of Study:</label>
+    <input type="text" id="major" required>
+    <label for="graduationYear">Graduation Year:</label>
+    <input type="number" id="graduationYear" required>
+
+    <!-- Employment History -->
+    <h3>Employment History</h3>
+    <label for="previousJobTitles">Previous Job Titles:</label>
+    <input type="text" id="previousJobTitles" required>
+    <label for="companyNames">Company Names:</label>
+    <input type="text" id="companyNames" required>
+    <label for="employmentDates">Employment Dates:</label>
+    <input type="text" id="employmentDates" required>
+    <label for="jobResponsibilities">Job Responsibilities:</label>
+    <textarea id="jobResponsibilities" rows="4" required></textarea>
+
+    <!-- Skills -->
+    <h3>Skills</h3>
+    <label for="relevantSkills">Relevant Skills:</label>
+    <input type="text" id="relevantSkills" required>
+    <label for="certifications">Certifications:</label>
+    <input type="text" id="certifications" required>
+
+    <!-- Availability -->
+    <h3>Availability</h3>
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" required>
+    <label for="workSchedule">Preferred Work Schedule:</label>
+    <input type="text" id="workSchedule" required>
+    <label for="relocate">Willingness to Relocate:</label>
+    <input type="checkbox" id="relocate">
+
+    <!-- References -->
+    <h3>References</h3>
+    <label for="referenceName">Reference Name:</label>
+    <input type="text" id="referenceName" required>
+    <label for="referenceContact">Reference Contact Information:</label>
+    <input type="text" id="referenceContact" required>
+    <label for="relationship">Relationship to Applicant:</label>
+    <input type="text" id="relationship" required>
+
+    <!-- Additional Questions -->
+    <h3>Additional Questions</h3>
+    <label for="whyWork">Why do you want to work for this company?</label>
+    <textarea id="whyWork" rows="4" required></textarea>
+
+    <!-- Consent and Agreement -->
+    <label>
+      <input type="checkbox" id="termsConditions" required>
+      I agree to the terms and conditions
+    </label>
+    <br>
+    <label>
+      <input type="checkbox" id="privacyPolicy" required>
+      I acknowledge the privacy policy
+    </label>
+
+    <!-- Submit Button -->
+    <button type="button" id="submitBtn">Submit Application</button>
+  </form>
+
+  <!-- View Applications as Table Button -->
+  <button id="viewAsTableBtn">View Applications as Table</button>
+
+  <!-- Table to display applications -->
+  <table id="applicationsTable" style="display: none;"></table>
+
+  <script>
+    document.getElementById('submitBtn').addEventListener('click', function() {
+      var form = document.getElementById('jobApplicationForm');
+
+      // Client-side validation
+      if (!form.checkValidity()) {
+        alert("Please fill out all required fields correctly.");
+        return;
+      }
+
+      var formData = new FormData(form);
+      var table = document.getElementById('applicationsTable');
+
+      // Clear existing table content
+      table.innerHTML = '';
+
+      // Create table header
+      var headerRow = table.insertRow();
+      var labels = form.querySelectorAll('label');
+      labels.forEach(function(label) {
+        var th = document.createElement('th');
+        th.textContent = label.textContent.replace(':', '');
+        headerRow.appendChild(th);
+      });
+
+      // Create table row
+      var row = table.insertRow();
+      var inputs = form.querySelectorAll('input, select, textarea');
+      inputs.forEach(function(input) {
+        var cell = row.insertCell();
+        if (input.type === 'file') {
+          cell.textContent = input.files[0] ? input.files[0].name : 'No file chosen';
+        } else if (input.type === 'checkbox') {
+          cell.textContent = input.checked ? 'Yes' : 'No';
+        } else {
+          cell.textContent = input.value;
+        }
+      });
+
+      // Display table
+      table.style.display = 'block';
+    });
+
+    document.getElementById('viewAsTableBtn').addEventListener('click', function() {
+      var table = document.getElementById('applicationsTable');
+      if (table.style.display === 'none') {
+        table.style.display = 'block';
+      } else {
+        table.style.display = 'none';
+      }
+    });
+
+    // Client-side validation for phone number
+    document.getElementById('phoneNumber').addEventListener('input', function() {
+      var phoneNumber = this.value;
+      var phoneNumberRegex = /^\d{10}$/; // Assuming 10-digit phone numbers
+      if (!phoneNumberRegex.test(phoneNumber)) {
+        this.setCustomValidity("Please enter a valid 10-digit phone number.");
+      } else {
+        this.setCustomValidity("");
+      }
+    });
+
+    // Client-side validation for email
+    document.getElementById('email').addEventListener('input', function() {
+      var email = this.value;
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        this.setCustomValidity("Please enter a valid email address.");
+      } else {
+        this.setCustomValidity("");
+      }
+    });
+  </script>
+
+</body>
+</html>
